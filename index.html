@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>钢琴听力训练</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="game-controls">
+            <button id="playButton">播放音符</button>
+            <button id="selectButton">选择琴键</button>
+            <button id="previewButton">试听已选</button>
+            <button id="submitButton">提交答案</button>
+            <div id="selectedNotes" class="selected-notes">当前音符：</div>
+            <div id="lockedNotes" class="locked-notes">已选择的音符：</div>
+            <div id="result" class="result"></div>
+        </div>
+        <div class="piano">
+            <div class="piano-keys">
+                <!-- 白键 -->
+                <div data-note="C4" class="key white">C</div>
+                <div data-note="D4" class="key white">D</div>
+                <div data-note="E4" class="key white">E</div>
+                <div data-note="F4" class="key white">F</div>
+                <div data-note="G4" class="key white">G</div>
+                <div data-note="A4" class="key white">A</div>
+                <div data-note="B4" class="key white">B</div>
+                <!-- 黑键 -->
+                <div data-note="C#4" class="key black"></div>
+                <div data-note="D#4" class="key black"></div>
+                <div data-note="F#4" class="key black"></div>
+                <div data-note="G#4" class="key black"></div>
+                <div data-note="A#4" class="key black"></div>
+            </div>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>
