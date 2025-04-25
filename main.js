@@ -25,6 +25,7 @@ let canSelect = false;
 let canPlay = true; // 控制播放按钮是否可用
 let selectedNoteCount = 1; // 用户选择的音符数量
 let playCount = 0; // 播放次数计数器
+let correctStreak = 0; // 连续答对次数
 
 // DOM 元素
 const playButton = document.getElementById('playButton');
@@ -35,6 +36,14 @@ const resultDiv = document.getElementById('result');
 const keys = document.querySelectorAll('.key');
 const selectedNotesDiv = document.getElementById('selectedNotes');
 const lockedNotesDiv = document.getElementById('lockedNotes');
+
+// 创建连续答对显示区域
+const streakDiv = document.createElement('div');
+streakDiv.id = 'streakDiv';
+streakDiv.style.marginBottom = '10px';
+streakDiv.style.color = 'orange';
+streakDiv.style.fontWeight = 'bold';
+document.querySelector('.game-controls').insertBefore(streakDiv, playButton);
 
 // 创建音符数量选择器
 const noteCountSelector = document.createElement('select');
@@ -54,6 +63,9 @@ document.querySelector('.game-controls').insertBefore(noteCountSelector, playBut
 // 音符数量选择事件
 noteCountSelector.addEventListener('change', (e) => {
     selectedNoteCount = parseInt(e.target.value);
+    // 重置连续答对次数
+    correctStreak = 0;
+    streakDiv.textContent = '';
 });
 
 // 初始化音频上下文
@@ -162,6 +174,8 @@ function handleKeyClick(event) {
 
 // 选择当前音符
 function selectCurrentNote() {
+    if (!canSelect) return;
+
     const currentNotes = lockedNotesDiv.textContent.split('：')[1] || '';
     const selectedCount = currentNotes ? currentNotes.split(' ').filter(n => n).length : 0;
     
@@ -170,24 +184,34 @@ function selectCurrentNote() {
         lockedNotesDiv.textContent = '已选择的音符：';
         selectedNotesDiv.textContent = '当前音符：';
         selectButton.textContent = '选择';
-        canSelect = true;
-        selectButton.disabled = false;
+        resultDiv.textContent = '';
         return;
     }
     
     // 否则添加新的音符
-    if (playerSequence.length === 0) return;
+    if (playerSequence.length === 0) {
+        resultDiv.textContent = `请先点击琴键选择第 ${selectedCount + 1} 个音符`;
+        resultDiv.style.color = 'blue';
+        return;
+    }
     
     const selectedNote = playerSequence[0];
     const updatedNotes = currentNotes ? currentNotes + ' ' + selectedNote.note.replace('4', '') : selectedNote.note.replace('4', '');
+    const newSelectedCount = updatedNotes.split(' ').filter(n => n).length;
     
     // 更新已选择音符显示
     lockedNotesDiv.textContent = '已选择的音符：' + updatedNotes;
     selectedNotesDiv.textContent = '当前音符：';
     playerSequence = [];
     
-    // 检查是否已选择足够的音符
-    if (updatedNotes.split(' ').filter(n => n).length === currentSequence.length) {
+    // 更新引导文字
+    if (newSelectedCount < currentSequence.length) {
+        resultDiv.textContent = `请选择第 ${newSelectedCount + 1} 个音符`;
+        resultDiv.style.color = 'blue';
+        selectButton.textContent = '选择';
+    } else {
+        resultDiv.textContent = '已选择完所有音符，可以提交答案或清除重选';
+        resultDiv.style.color = 'green';
         selectButton.textContent = '清除';
     }
 }
@@ -207,17 +231,28 @@ function checkAnswer() {
     );
 
     if (correct) {
-        resultDiv.textContent = '答对了！';
+        resultDiv.textContent = '答对了！🎉';
         resultDiv.style.color = 'green';
+        // 更新连续答对次数
+        correctStreak++;
+        if (correctStreak === 1) {
+            streakDiv.textContent = '答对1次！';
+        } else {
+            streakDiv.textContent = `连续答对${correctStreak}次！`;
+        }
         // 答对时才重新启用播放按钮，允许开始新的游戏
         canPlay = true;
         playButton.disabled = false;
     } else {
-        resultDiv.textContent = '答错了，请重试！';
+        resultDiv.textContent = '答错了，请重试！😢';
         resultDiv.style.color = 'red';
+        // 重置连续答对次数
+        correctStreak = 0;
+        streakDiv.textContent = '';
         // 答错时重置选择状态，允许重新选择
         canSelect = true;
         selectButton.disabled = false;
+        selectButton.textContent = '选择';
         lockedNotesDiv.textContent = '已选择的音符：';
         // 答错时允许重新播放当前序列
         playButton.disabled = false;
@@ -254,6 +289,11 @@ playButton.addEventListener('click', () => {
         playCountDiv.textContent = playCount;
         playCountDiv.style.display = 'flex';
         playSequence();
+        if (playCount >= 3) {
+            canPlay = false;
+            playButton.disabled = true;
+            playButton.innerHTML = '<i class="fas fa-ban"></i> 已达上限';
+        }
         return;
     }
     // 重置播放次数
@@ -263,6 +303,7 @@ playButton.addEventListener('click', () => {
     playerSequence = [];
     canSelect = false;
     selectButton.disabled = false;
+    selectButton.textContent = '选择'; // 重置选择按钮的文字
     keys.forEach(key => key.classList.remove('active'));
     resultDiv.textContent = '';
     selectedNotesDiv.textContent = '当前音符：';

@@ -4,75 +4,115 @@
     box-sizing: border-box;
 }
 
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+        width: 100%;
+    }
+
+    button {
+        margin: 5px;
+        padding: 8px 15px;
+        font-size: 0.9rem;
+        min-width: 100px;
+    }
+
+    .white {
+        width: 60px;
+        height: 200px;
+    }
+
+    .black {
+        width: 40px;
+        height: 120px;
+    }
+
+    .black:nth-child(8) { left: 40px; }
+    .black:nth-child(9) { left: 100px; }
+    .black:nth-child(10) { left: 220px; }
+    .black:nth-child(11) { left: 280px; }
+    .black:nth-child(12) { left: 340px; }
+}
+
 body {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #f0f0f0;
-    font-family: Arial, sans-serif;
+    background-color: #fff;
+    font-family: 'Noto Sans SC', sans-serif;
 }
 
 .container {
     text-align: center;
-    background-color: white;
+    background-color: #f5f5f5;
     padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
 }
 
 .game-controls {
     margin-bottom: 2rem;
+    padding: 1rem;
 }
 
 #noteCountSelector {
     margin: 0 10px;
-    padding: 5px;
+    padding: 8px 12px;
     font-size: 16px;
     border-radius: 4px;
-    border: 1px solid #ccc;
+    border: 1px solid #0066cc;
     background-color: white;
     cursor: pointer;
+    color: #0066cc;
 }
 
 label[for="noteCountSelector"] {
     font-size: 16px;
     margin-right: 5px;
+    color: #0066cc;
 }
 
 button {
-    padding: 10px 20px;
-    margin: 0 10px;
+    padding: 8px 16px;
+    margin: 0 5px 5px;
     font-size: 1rem;
-    border: none;
-    border-radius: 5px;
+    border: 1px solid #0066cc;
+    border-radius: 4px;
     cursor: pointer;
-    background-color: #4CAF50;
+    background-color: #0066cc;
     color: white;
-    transition: background-color 0.3s;
+    min-width: 100px;
 }
 
-button:hover {
-    background-color: #45a049;
+button:disabled {
+    background-color: #ccc;
+    border-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 
 .selected-notes {
     margin-top: 1rem;
-    font-size: 1.1rem;
-    color: #666;
+    font-size: 1rem;
+    color: #0066cc;
     min-height: 24px;
+    padding: 8px;
 }
 
 .result {
     margin-top: 1rem;
     font-size: 1.2rem;
     min-height: 30px;
+    padding: 10px;
 }
 
 .piano {
     position: relative;
     margin: auto;
-    width: 700px;
+    width: 100%;
+    max-width: 700px;
+    overflow-x: auto;
+    padding: 20px;
 }
 
 .piano-keys {
@@ -102,18 +142,18 @@ button:hover {
     position: absolute;
     width: 60px;
     height: 180px;
-    background-color: black;
+    background-color: #0066cc;
     border-radius: 0 0 5px 5px;
     z-index: 1;
     color: white;
 }
 
 .white.active {
-    background-color: #e0e0e0;
+    background-color: #e6e6e6;
 }
 
 .black.active {
-    background-color: #333;
+    background-color: #004d99;
 }
 
 /* 黑键位置 */
@@ -122,3 +162,9 @@ button:hover {
 .black:nth-child(10) { left: 370px; }
 .black:nth-child(11) { left: 470px; }
 .black:nth-child(12) { left: 570px; }
+
+#streakDiv {
+    color: #0066cc;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+}

@@ -3,16 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>钢琴听力训练</title>
+    <title>辨音挑战小游戏</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <div class="game-controls">
-            <button id="playButton">播放音符</button>
-            <button id="selectButton">选择琴键</button>
-            <button id="previewButton">试听已选</button>
-            <button id="submitButton">提交答案</button>
+            <button id="playButton"><i class="fas fa-play"></i> 播放音符</button>
+            <button id="selectButton"><i class="fas fa-check"></i> 选择琴键</button>
+            <button id="previewButton"><i class="fas fa-volume-up"></i> 试听已选</button>
+            <button id="submitButton"><i class="fas fa-paper-plane"></i> 提交答案</button>
             <div id="selectedNotes" class="selected-notes">当前音符：</div>
             <div id="lockedNotes" class="locked-notes">已选择的音符：</div>
             <div id="result" class="result"></div>
