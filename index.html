@@ -3,64 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>辨音挑战小游戏</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>音符听辨游戏</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .controls {
+            margin: 20px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .controls-row {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+            justify-content: center;
+        }
+
+        .message {
+            height: 30px;
+            margin: 10px 0;
+            font-weight: bold;
+            color: #0066cc;
+        }
+
+        .piano {
+            position: relative;
+            height: 200px;
+            margin: 20px auto;
+            display: inline-block;
+        }
+
+        .white-key {
+            width: 40px;
+            height: 200px;
+            background: white;
+            border: 1px solid #000;
+            float: left;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .black-key {
+            width: 24px;
+            height: 120px;
+            background: black;
+            position: absolute;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        .white-key.selected {
+            background: #e6f3ff;
+        }
+
+        .black-key.selected {
+            background: #333;
+        }
+
+        .key-label {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+            color: #000;
+        }
+
+        .black-key .key-label {
+            color: #fff;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            background-color: #0066cc;
+        }
+
+        #submitButton {
+            background-color: #28a745;
+        }
+
+        #hintButton {
+            background-color: #17a2b8;
+        }
+
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        button.active {
+            background-color: #004d99;
+            transform: translateY(2px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .white-key.pressed {
+            background-color: #e0e0e0;
+            transform: translateY(2px);
+        }
+
+        .black-key.pressed {
+            background-color: #333;
+            transform: translateY(2px);
+        }
+
+        select {
+            padding: 10px;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
-    <header class="header">
-        <h1 class="game-title">辨音挑战小游戏</h1>
-        <div class="url">ariellokay.github.io</div>
-    </header>
-    <div class="container">
-        <div class="status-bar">
-            <div class="success-msg" id="streakDiv"></div>
+    <h1>音符听辨游戏</h1>
+    <div class="message" id="message"></div>
+    <div class="selected-notes" id="selectedNotes"></div>
+    
+    <div class="controls">
+        <div class="controls-row">
+            <label for="gameMode">你想挑战：</label>
+            <select id="gameMode">
+                <option value="single">单音符</option>
+                <option value="multi">多音符</option>
+            </select>
+
+            <label for="noteCount">选择音符数量：</label>
+            <select id="noteCount">
+                <option value="1">1个音符</option>
+                <option value="2">2个音符</option>
+                <option value="3">3个音符</option>
+                <option value="4">4个音符</option>
+                <option value="5">5个音符</option>
+                <option value="6">6个音符</option>
+            </select>
         </div>
-        <div class="controls">
-            <div class="button-group">
-            <button id="playButton"><i class="fas fa-play"></i> 播放音符</button>
-            <button id="selectButton"><i class="fas fa-check"></i> 选择琴键</button>
-            <button id="previewButton"><i class="fas fa-volume-up"></i> 试听已选</button>
-            <button id="submitButton"><i class="fas fa-paper-plane"></i> 提交答案</button>
-            <div id="selectedNotes" class="selected-notes">当前音符：</div>
-            <div id="lockedNotes" class="locked-notes">已选择的音符：</div>
-            <div id="result" class="result"></div>
-            </div>
-        </div>
-        <div class="note-display">
-            <div class="current-note" id="currentNote"></div>
-            <div class="complete-msg" id="completeMsg"></div>
-        </div>
-        <div class="piano-container">
-            <div class="key-labels">
-                <span>C</span>
-                <span>D</span>
-                <span>E</span>
-                <span>F</span>
-                <span>G</span>
-                <span>A</span>
-                <span>B</span>
-            </div>
-            <div class="piano">
-            <div class="piano-keys">
-                <!-- 白键 -->
-                <div data-note="C4" class="key white">C</div>
-                <div data-note="D4" class="key white">D</div>
-                <div data-note="E4" class="key white">E</div>
-                <div data-note="F4" class="key white">F</div>
-                <div data-note="G4" class="key white">G</div>
-                <div data-note="A4" class="key white">A</div>
-                <div data-note="B4" class="key white">B</div>
-                <!-- 黑键 -->
-                <div data-note="C#4" class="key black"></div>
-                <div data-note="D#4" class="key black"></div>
-                <div data-note="F#4" class="key black"></div>
-                <div data-note="G#4" class="key black"></div>
-                <div data-note="A#4" class="key black"></div>
-            </div>
+        <div class="controls-row">
+            <button id="playButton">播放音符</button>
+            <button id="selectButton">选择琴键</button>
+            <button id="clearButton">清除选择</button>
+            <button id="submitButton">提交答案</button>
+            <button id="hintButton" style="display: none;">提示</button>
         </div>
     </div>
-    <script src="main.js"></script>
+
+    <div class="piano" id="piano">
+        <!-- 钢琴键将通过JavaScript动态生成 -->
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
