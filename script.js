@@ -98,20 +98,67 @@ function generateRandomNotes() {
 // 播放音符
 async function playNote(frequency, duration = 1) {
     initAudioContext();
-    const oscillator = gameState.audioContext.createOscillator();
-    const gainNode = gameState.audioContext.createGain();
+    const ctx = gameState.audioContext;
+    const now = ctx.currentTime;
 
-    oscillator.connect(gainNode);
-    gainNode.connect(gameState.audioContext.destination);
+    // 创建主音色和谐波
+    const oscillators = [];
+    const gains = [];
+    
+    // 谐波比例
+    const harmonics = [
+        { freq: 1, gain: 0.7 },    // 基频
+        { freq: 2, gain: 0.15 },   // 第一泛音
+        { freq: 3, gain: 0.1 },    // 第二泛音
+        { freq: 4, gain: 0.05 }    // 第三泛音
+    ];
 
-    oscillator.type = 'sine';
-    oscillator.frequency.value = frequency;
+    // 创建主音色和谐波
+    harmonics.forEach(({ freq, gain }) => {
+        const osc = ctx.createOscillator();
+        const gainNode = ctx.createGain();
+        
+        osc.type = 'sine';
+        osc.frequency.value = frequency * freq;
+        
+        // 音量包络
+        gainNode.gain.setValueAtTime(0, now);
+        gainNode.gain.linearRampToValueAtTime(gain, now + 0.02);  // 快速起音
+        gainNode.gain.exponentialRampToValueAtTime(gain * 0.3, now + 0.1);  // 快速衰减
+        gainNode.gain.exponentialRampToValueAtTime(gain * 0.15, now + 0.2); // 延音
+        gainNode.gain.exponentialRampToValueAtTime(0.001, now + duration);  // 释音
 
-    gainNode.gain.setValueAtTime(0.5, gameState.audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, gameState.audioContext.currentTime + duration);
+        osc.connect(gainNode);
+        gainNode.connect(ctx.destination);
+        
+        oscillators.push(osc);
+        gains.push(gainNode);
+    });
 
-    oscillator.start();
-    oscillator.stop(gameState.audioContext.currentTime + duration);
+    // 添加轻微的噪声模拟琴弦振动
+    const noise = ctx.createBufferSource();
+    const noiseGain = ctx.createGain();
+    const noiseBuffer = ctx.createBuffer(1, ctx.sampleRate * 0.1, ctx.sampleRate);
+    const noiseData = noiseBuffer.getChannelData(0);
+    
+    for (let i = 0; i < noiseBuffer.length; i++) {
+        noiseData[i] = Math.random() * 2 - 1;
+    }
+    
+    noise.buffer = noiseBuffer;
+    noiseGain.gain.setValueAtTime(0.02, now);
+    noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+    
+    noise.connect(noiseGain);
+    noiseGain.connect(ctx.destination);
+
+    // 启动所有音频源
+    oscillators.forEach(osc => osc.start(now));
+    noise.start(now);
+
+    // 停止所有音频源
+    oscillators.forEach(osc => osc.stop(now + duration));
+    noise.stop(now + duration);
 
     return new Promise(resolve => setTimeout(resolve, duration * 1000));
 }
