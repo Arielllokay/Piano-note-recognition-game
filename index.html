@@ -50,10 +50,13 @@
             height: 200px;
             margin: 20px auto;
             display: inline-block;
+            min-width: 280px;
+            max-width: 100%;
+            overflow-x: auto;
         }
 
         .white-key {
-            width: 40px;
+            width: clamp(30px, 8vw, 40px);
             height: 200px;
             background: white;
             border: 1px solid #000;
@@ -64,13 +67,14 @@
         }
 
         .black-key {
-            width: 24px;
+            width: clamp(18px, 6vw, 24px);
             height: 120px;
             background: black;
             position: absolute;
             cursor: pointer;
             z-index: 1;
             box-sizing: border-box;
+            transform: translateX(-50%);
         }
 
         .piano {

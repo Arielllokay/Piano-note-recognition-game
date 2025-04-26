@@ -65,14 +65,16 @@ function createPianoKeys() {
         const key = document.createElement('div');
         key.className = 'black-key';
         key.dataset.note = note.key;
-        // 计算黑键的位置，使其位于对应白键的连接处中间
+        // 计算黑键的位置，使其位于对应白键的连接处中间，并向右偏移半个黑键宽度
+        const whiteKeyWidth = document.querySelector('.white-key').offsetWidth;
+        const blackKeyWidth = document.querySelector('.black-key')?.offsetWidth || whiteKeyWidth * 0.6;
         let leftPosition;
-        if (index === 0) leftPosition = 75;  // C#
-        else if (index === 1) leftPosition = 175;  // D#
-        else if (index === 2) leftPosition = 375;  // F#
-        else if (index === 3) leftPosition = 475;  // G#
-        else leftPosition = 575;  // A#
-        key.style.left = `calc(${leftPosition}% - 12px)`;
+        if (index === 0) leftPosition = whiteKeyWidth * 0.75 + blackKeyWidth / 2;  // C#
+        else if (index === 1) leftPosition = whiteKeyWidth * 1.75 + blackKeyWidth / 2;  // D#
+        else if (index === 2) leftPosition = whiteKeyWidth * 3.75 + blackKeyWidth / 2;  // F#
+        else if (index === 3) leftPosition = whiteKeyWidth * 4.75 + blackKeyWidth / 2;  // G#
+        else leftPosition = whiteKeyWidth * 5.75 + blackKeyWidth / 2;  // A#
+        key.style.left = `${leftPosition}px`;
         key.innerHTML = `<div class="key-label">${note.label}</div>`;
         key.addEventListener('click', () => handleKeyClick(note));
         piano.appendChild(key);
