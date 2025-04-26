@@ -2,6 +2,71 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+.header {
+    text-align: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #ddd;
+    background: white;
+}
+
+.game-title {
+    font-size: 1.4rem;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.url {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.status-bar {
+    padding: 16px;
+}
+
+.status-bar .success-msg {
+    color: #28a745;
+}
+
+.controls {
+    padding: 0 16px;
+}
+
+.controls .button-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.controls button {
+    background: #007bff;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.controls select {
+    padding: 6px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+.note-display {
+    padding: 16px;
+}
+
+.note-display .current-note {
+    background: #e9ecef;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.note-display .complete-msg {
+    color: #28a745;
 }
 
 @media (max-width: 480px) {
@@ -10,7 +75,43 @@
         width: 100%;
         max-width: 100%;
         margin: 0;
+        min-height: 100vh;
     }
+
+    .piano-container {
+        margin: 1rem auto;
+        padding: 10px;
+        max-width: 100%;
+    }
+
+    .piano {
+        padding: 10px 0;
+        margin: 0 auto;
+        width: 100%;
+        max-width: 360px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .white {
+        width: 45px;
+        height: 120px;
+        margin-right: 1px;
+    }
+
+    .black {
+        width: 30px;
+        height: 75px;
+        transform: translateX(50%);
+        right: 0;
+    }
+
+    /* 移动端黑键位置 */
+    .white:nth-child(1) .black { right: -12px; } /* C# */
+    .white:nth-child(2) .black { right: -12px; } /* D# */
+    .white:nth-child(4) .black { right: -12px; } /* F# */
+    .white:nth-child(5) .black { right: -12px; } /* G# */
+    .white:nth-child(6) .black { right: -12px; } /* A# */
 
     .game-controls {
         display: grid;
@@ -43,6 +144,7 @@
     .piano {
         padding: 10px 5px;
         margin-top: 15px;
+        min-width: 320px;
     }
 
     .white {
@@ -52,17 +154,17 @@
     }
 
     .black {
-        width: 26px;
+        width: 26px; /* 白键宽度的2/3 */
         height: 60px;
-        left: 27px;
+        transform: translateX(-50%);
     }
 
     /* 修正黑键位置，确保位于白键之间 */
-    .black:nth-child(8) { left: calc(40px - 13px); }
-    .black:nth-child(9) { left: calc(80px - 13px); }
-    .black:nth-child(10) { left: calc(160px - 13px); }
-    .black:nth-child(11) { left: calc(200px - 13px); }
-    .black:nth-child(12) { left: calc(240px - 13px); }
+    .black:nth-child(8) { left: calc(40px + 1px); } /* C# */
+    .black:nth-child(9) { left: calc(80px + 1px); } /* D# */
+    .black:nth-child(10) { left: calc(160px + 1px); } /* F# */
+    .black:nth-child(11) { left: calc(200px + 1px); } /* G# */
+    .black:nth-child(12) { left: calc(240px + 1px); } /* A# */
 }
 
 body {
@@ -70,16 +172,55 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #fff;
-    font-family: 'Noto Sans SC', sans-serif;
+    background-color: #f0f0f0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
 .container {
     text-align: center;
     background-color: #f5f5f5;
     padding: 2rem;
-    border-radius: 5px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
+
+.piano-container {
+    margin-top: 2rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.piano {
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 700px;
+}
+
+.white {
+    width: 60px;
+    height: 180px;
+    margin-right: 2px;
+}
+
+.black {
+    width: 40px;
+    height: 100px;
+    transform: translateX(-50%);
+}
+
+.black:nth-child(8) { left: calc(60px + 2px); }
+.black:nth-child(9) { left: calc(120px + 2px); }
+.black:nth-child(10) { left: calc(240px + 2px); }
+.black:nth-child(11) { left: calc(300px + 2px); }
+.black:nth-child(12) { left: calc(360px + 2px); }
 
 .game-controls {
     margin-bottom: 1.5rem;
@@ -155,14 +296,40 @@ button:disabled {
     padding: 10px;
 }
 
+.piano-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 2rem auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.key-labels {
+    display: flex;
+    justify-content: space-around;
+    padding: 8px 0;
+}
+
+.key-labels span {
+    color: #333;
+    font-weight: 500;
+}
+
+.key-labels span.active {
+    color: #007bff;
+}
+
 .piano {
     position: relative;
     margin: auto;
-    width: 100vw;
-    max-width: none;
-    overflow-x: auto;
-    padding: 20px;
-    white-space: nowrap;
+    width: 100%;
+    max-width: 700px;
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
 }
 
 .piano-keys {
@@ -185,24 +352,29 @@ button:disabled {
 
 .white {
     width: 60px;
-    height: 120px;
+    height: 180px;
     background-color: white;
     border: 1px solid #ccc;
     border-radius: 0 0 5px 5px;
     margin-right: 2px;
     display: inline-block;
     position: relative;
+    z-index: 1;
+    transition: background-color 0.2s;
 }
 
 .black {
     position: absolute;
-    width: 30px;
-    height: 70px;
+    width: 40px;
+    height: 110px;
     background-color: #0066cc;
     border-radius: 0 0 5px 5px;
-    z-index: 1;
+    z-index: 2;
     color: white;
-    left: 45px;
+    transform: translateX(50%);
+    top: 0;
+    right: 0;
+    transition: background-color 0.2s;
 }
 
 .white.active {
@@ -213,12 +385,12 @@ button:disabled {
     background-color: #004d99;
 }
 
-/* 黑键位置 */
-.black:nth-child(8) { left: calc(60px + 45px); }
-.black:nth-child(9) { left: calc(120px + 45px); }
-.black:nth-child(10) { left: calc(240px + 45px); }
-.black:nth-child(11) { left: calc(300px + 45px); }
-.black:nth-child(12) { left: calc(360px + 45px); }
+/* 黑键位置 - 调整为白键右侧 */
+.white:nth-child(1) .black { right: -16px; } /* C# */
+.white:nth-child(2) .black { right: -16px; } /* D# */
+.white:nth-child(4) .black { right: -16px; } /* F# */
+.white:nth-child(5) .black { right: -16px; } /* G# */
+.white:nth-child(6) .black { right: -16px; } /* A# */
 
 #streakDiv {
     color: #0066cc;
