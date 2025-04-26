@@ -8,45 +8,61 @@
     .container {
         padding: 1rem;
         width: 100%;
+        max-width: 100%;
+        margin: 0;
     }
 
     .game-controls {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        margin-bottom: 1rem;
+        gap: 15px;
+        margin-bottom: 1.5rem;
         width: 100%;
+        padding: 0;
     }
 
     button {
         width: 100%;
         margin: 0;
-        padding: 12px 8px;
-        font-size: 1rem;
-        height: 45px;
+        padding: 10px;
+        font-size: 0.9rem;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .selected-notes,
+    .locked-notes,
+    .result {
+        font-size: 0.9rem;
+        padding: 6px;
+        margin-top: 0.8rem;
     }
 
     .piano {
-        padding: 10px;
-        margin-top: 20px;
+        padding: 10px 5px;
+        margin-top: 15px;
     }
 
     .white {
-        width: 55px;
+        width: 40px;
+        height: 100px;
         margin-right: 1px;
     }
 
     .black {
-        width: 44px;
-        left: 40px;
+        width: 26px;
+        height: 60px;
+        left: 27px;
     }
 
-    /* 移动端黑键位置计算 */
-    .black:nth-child(8) { left: calc(55px + 40px); }
-    .black:nth-child(9) { left: calc(110px + 40px); }
-    .black:nth-child(10) { left: calc(220px + 40px); }
-    .black:nth-child(11) { left: calc(275px + 40px); }
-    .black:nth-child(12) { left: calc(330px + 40px); }
+    /* 修正黑键位置，确保位于白键之间 */
+    .black:nth-child(8) { left: calc(40px - 13px); }
+    .black:nth-child(9) { left: calc(80px - 13px); }
+    .black:nth-child(10) { left: calc(160px - 13px); }
+    .black:nth-child(11) { left: calc(200px - 13px); }
+    .black:nth-child(12) { left: calc(240px - 13px); }
 }
 
 body {
@@ -66,8 +82,11 @@ body {
 }
 
 .game-controls {
-    margin-bottom: 2rem;
-    padding: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 0.8rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 #noteCountSelector {
@@ -91,12 +110,21 @@ button {
     padding: 8px 16px;
     margin: 0 5px 5px;
     font-size: 1rem;
-    border: 1px solid #0066cc;
-    border-radius: 4px;
+    border: none;
+    border-radius: 6px;
     cursor: pointer;
     background-color: #0066cc;
     color: white;
     min-width: 100px;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+button i {
+    font-size: 0.9em;
 }
 
 button:disabled {
@@ -116,6 +144,8 @@ button:disabled {
     min-height: 24px;
     padding: 8px;
     text-align: center;
+    background-color: rgba(0, 102, 204, 0.05);
+    border-radius: 6px;
 }
 
 .result {
