@@ -28,6 +28,14 @@
             gap: 10px;
             margin-top: 10px;
             justify-content: center;
+            align-items: center;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0 auto;
         }
 
         .message {
@@ -52,6 +60,7 @@
             float: left;
             position: relative;
             cursor: pointer;
+            box-sizing: border-box;
         }
 
         .black-key {
@@ -61,6 +70,15 @@
             position: absolute;
             cursor: pointer;
             z-index: 1;
+            box-sizing: border-box;
+        }
+
+        .piano {
+            position: relative;
+            height: 200px;
+            margin: 20px auto;
+            display: inline-block;
+            box-sizing: border-box;
         }
 
         .white-key.selected {
@@ -136,21 +154,25 @@
     
     <div class="controls">
         <div class="controls-row">
-            <label for="gameMode">你想挑战：</label>
-            <select id="gameMode">
-                <option value="single">单音符</option>
-                <option value="multi">多音符</option>
-            </select>
-
-            <label for="noteCount">选择音符数量：</label>
-            <select id="noteCount">
-                <option value="1">1个音符</option>
-                <option value="2">2个音符</option>
-                <option value="3">3个音符</option>
-                <option value="4">4个音符</option>
-                <option value="5">5个音符</option>
-                <option value="6">6个音符</option>
-            </select>
+            <div class="control-group">
+                <label for="gameMode">你想挑战：</label>
+                <select id="gameMode">
+                    <option value="single">单音符</option>
+                    <option value="multi">多音符</option>
+                </select>
+            </div>
+        </div>
+        <div class="controls-row">
+            <div class="control-group">
+                <label for="noteCount">选择音符数量：</label>
+                <select id="noteCount">
+                    <option value="1">1个音符</option>
+                    <option value="2">2个音符</option>
+                    <option value="3">3个音符</option>
+                    <option value="4">4个音符</option>
+                    <option value="5">5个音符</option>
+                </select>
+            </div>
         </div>
         <div class="controls-row">
             <button id="playButton">播放音符</button>

@@ -67,12 +67,12 @@ function createPianoKeys() {
         key.dataset.note = note.key;
         // 计算黑键的位置，使其位于对应白键的连接处中间
         let leftPosition;
-        if (index === 0) leftPosition = 30;  // C#
-        else if (index === 1) leftPosition = 70;  // D#
-        else if (index === 2) leftPosition = 150;  // F#
-        else if (index === 3) leftPosition = 190;  // G#
-        else leftPosition = 230;  // A#
-        key.style.left = `${leftPosition}px`;
+        if (index === 0) leftPosition = 75;  // C#
+        else if (index === 1) leftPosition = 175;  // D#
+        else if (index === 2) leftPosition = 375;  // F#
+        else if (index === 3) leftPosition = 475;  // G#
+        else leftPosition = 575;  // A#
+        key.style.left = `calc(${leftPosition}% - 12px)`;
         key.innerHTML = `<div class="key-label">${note.label}</div>`;
         key.addEventListener('click', () => handleKeyClick(note));
         piano.appendChild(key);
